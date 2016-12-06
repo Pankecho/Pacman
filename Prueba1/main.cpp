@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <iostream>
 #include <GLUT/glut.h>
 //#include <GL/glut.h>
@@ -61,8 +62,53 @@ char mapa[42][42]={
     "ooooooooooooooooooooooooooooooooooooooooo",
 };
 
-string puntaje = "Puntaje: ";
+char copia[42][42]= {
+    "ooooooooooooooooooooooooooooooooooooooooo",
+    "oxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxo",
+    "oxxpxxoxx++++++++++xxx+++++++++++xxoxxxxo",
+    "oxx+xxoxx+xxxxxxxx+xox+xxxxxxxxx+xxoxxxxo",
+    "oxx+xxoxx+xxooooxx+xox+xxoooooxx+xxoxxxxo",
+    "oxx+xxxxx+xxooooxx+xox+xxoooooxx+xxoxrxxo",
+    "oxx+++++++xxxxxxxx+xxx+xxxxxxxxx+xxxx+xxo",
+    "oxx+++++++++++++++++++c+++++++++++++++xxo",
+    "oxx+xxxxxxxxxxxxxx+xxx+xxxxxxxxxxxxxx+xxo",
+    "oxx+xooooooooooxxx+xox+xoooooooooooox+xxo",
+    "oxx+xooxxxxxxxxxxx+xxx+xxxxxxxxxxxxox+xxo",
+    "oxx+xoox+++++++++++xox++++++++++xooox+xxo",
+    "oxx+xooxxxxxxxxxxx+xox+xxxxxxxxxxxxox+xxo",
+    "oxx+xoooooooooooox+xox+xoooooooooooox+xxo",
+    "oxx+xoxxxxxxxxxxxx+xox+xxxxxxxxxxxxox+xxo",
+    "oxx+xoxx+++++++++++xox+++++++++++xxox+xxo",
+    "oxx+xoxx+xxxxxxxxx+xox+xxxxxxxxx+xxox+xxo",
+    "oxx+xoxx+xooooooox+xox+xooooooox+xxox+xxo",
+    "oxx+xoxx+xooooooox+xox+xooooooox+xxox+xxo",
+    "oxx+xoxx+xxxxxxxxx+xox+xxxxxxxxx+xxox+xxo",
+    "oxx+xoxx+++++++++++xox+++++++++++xxox+xxo",
+    "oxx+xoxx+xxxxxxxxx+xox+xxxxxxxxx+xxox+xxo",
+    "oxx+xoxx+xooooooox+xox+xooooooox+xxox+xxo",
+    "oxx+xoxx+xxxxoooox+xox+xooooxxxx+xxox+xxo",
+    "oxx+xoxx++++xoooox+xox+xoooox++++xxox+xxo",
+    "oxx+xoxx+xxxxoooox+xox+xooooxxxx+xxox+xxo",
+    "oxx+xoxx+xooooooox+xox+xooooooox+xxox+xxo",
+    "oxx+xoxx+xoooooooxbxox+xooooooox+xxox+xxo",
+    "oxx+xoxx+xxxxxxxxx+xox+xxxxxxxxx+xxox+xxo",
+    "oxx+xoxx+++++++++++xox+++++++++++xxox+xxo",
+    "oxx+xoxxxxxxxxxxxx+xox+xxxxxxxxxxxxox+xxo",
+    "oxx+xoooooooooooox+xox+xoooooooooooox+xxo",
+    "oxx+xxxxxxxxxxxxxx+xxx+xxxxxxxxxxxxxx+xxo",
+    "oxx+++++++++++++++++++++++++++++++++++xxo",
+    "oxx+xxx+xxxxxxxxxxxxxxxxxxxxxxxxx+xxx+xxo",
+    "oxx+xox+xooooooooooooooooooooooox+xox+xxo",
+    "oxx+xxx+xxxxxxxxxxxxxxxxxxxxxxxxx+xxx+xxo",
+    "oxx++++++++++++++++++++++++++++++++i++xxo",
+    "oxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxo",
+    "ooooooooooooooooooooooooooooooooooooooooo",
+};
 
+string puntaje = "Puntaje: ";
+bool comible = false;
+
+void reload();
 
 void Texto(char *string,GLfloat x,GLfloat y,GLfloat z){
     char *c;
@@ -284,41 +330,61 @@ void pintar_matriz(){
 }
 
 void ArrowKey(int key,int x,int y){
-    
     switch (key){
-            
         case GLUT_KEY_RIGHT:
-            if(px<2&(mapa[xpc+1][ypc]=='+'||mapa[xpc+1][ypc]=='.')){
-                px+=0.1;
-                mapa[xpc][ypc]='.';
-                xpc+=1;
-                mapa[xpc][ypc]='p';
-                
+            if(px < 2 && (mapa[xpc+1][ypc] == 'c' || mapa[xpc+1][ypc] == 'b' || mapa[xpc+1][ypc] == 'i' || mapa[xpc+1][ypc] == 'r') && !comible){
+                Texto("Has perdido",0, 2.5, .30);
+                printf("Muerto");
+                reload();
+            }else{
+                if((mapa[xpc+1][ypc]=='+'||mapa[xpc+1][ypc]=='.')){
+                    px+=0.1;
+                    mapa[xpc][ypc]='.';
+                    xpc+=1;
+                    mapa[xpc][ypc]='p';
+                }
             }
             break;
         case GLUT_KEY_LEFT:
-            if(px>-2&(mapa[xpc-1][ypc]=='+'||mapa[xpc-1][ypc]=='.')){
-                px-=0.1;
-                mapa[xpc][ypc]='.';
-                xpc-=1;
-                mapa[xpc][ypc]='p';
+            if(px > -2 && (mapa[xpc-1][ypc] == 'c' || mapa[xpc-1][ypc] == 'b' || mapa[xpc-1][ypc] == 'i' || mapa[xpc-1][ypc] == 'r') && !comible){
+                Texto("Has perdido",0, 2.5, .30);
+                 printf("Muerto");
+                reload();
+            }else{
+                if((mapa[xpc-1][ypc]=='+'||mapa[xpc-1][ypc]=='.')){
+                    px-=0.1;
+                    mapa[xpc][ypc]='.';
+                    xpc-=1;
+                    mapa[xpc][ypc]='p';
+                }
             }
             break;
         case GLUT_KEY_UP:
-            if(py<2&(mapa[xpc][ypc-1]=='+'||mapa[xpc][ypc-1]=='.')){
-                py+=0.1;
-                mapa[xpc][ypc]='.';
-                ypc-=1;
-                mapa[xpc][ypc]='p';
+            if(py < 2 && (mapa[xpc][ypc-1] == 'c' || mapa[xpc][ypc-1] == 'b' || mapa[xpc][ypc-1] == 'i' || mapa[xpc][ypc-1] == 'r') && !comible){
+                Texto("Has perdido",0, 2.5, .30);
+                 printf("Muerto");
+                reload();
+            }else{
+                if((mapa[xpc][ypc-1]=='+'||mapa[xpc][ypc-1]=='.')){
+                    py+=0.1;
+                    mapa[xpc][ypc]='.';
+                    ypc-=1;
+                    mapa[xpc][ypc]='p';
+                }
             }
             break;
         case GLUT_KEY_DOWN:
-            
-            if(py>-2&&(mapa[xpc][ypc+1]=='+'||mapa[xpc][ypc+1]=='.')){
-                py-=0.1;
-                mapa[xpc][ypc]='.';
-                ypc+=1;
-                mapa[xpc][ypc]='p';
+            if(py > -2 && (mapa[xpc][ypc+1] == 'c' || mapa[xpc][ypc+1] == 'b' || mapa[xpc][ypc+1] == 'i' || mapa[xpc][ypc+1] == 'r') && !comible){
+                Texto("Has perdido",0, 2.5, .30);
+                 printf("Muerto");
+                reload();
+            }else{
+                if((mapa[xpc][ypc+1]=='+'||mapa[xpc][ypc+1]=='.')){
+                    py-=0.1;
+                    mapa[xpc][ypc]='.';
+                    ypc+=1;
+                    mapa[xpc][ypc]='p';
+                }
             }
             break;
             
@@ -409,6 +475,14 @@ void keyboard(unsigned char key,int x,int y){
             exit(0);
             break;
     }	
+}
+
+void reload(){
+    
+    int i;
+    for (i = 0; i < 42; i++) {
+        strcpy(mapa[i], copia[i]);
+    }
 }
 
 int main(int argc,char** argv){

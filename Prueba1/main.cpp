@@ -483,6 +483,16 @@ void reload(){
     for (i = 0; i < 42; i++) {
         strcpy(mapa[i], copia[i]);
     }
+    anguloY=0;
+    anguloX=0;
+    anguloZ=0;
+    px=-1.8;
+    py=1.9;
+    escala=3;
+    xi=0;
+    yi=0;
+    xpc=2;
+    ypc=3;
 }
 
 int main(int argc,char** argv){

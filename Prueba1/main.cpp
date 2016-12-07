@@ -106,14 +106,21 @@ char copia[42][42]= {
     "ooooooooooooooooooooooooooooooooooooooooo",
 };
 
-GLfloat position[2] = {7,22};
+GLfloat position[4][2] = {{7,22},{27,18},{5,38},{37,35}};
+
 string puntaje = "Puntaje: ";
 string vida = "Vidas: ";
 bool comible = false;
 int vidas = 3;
 
+void duerme();
 void reload();
 int Random(int min, int max);
+
+void duerme(){
+    for (int i = 0; i < 8000000; i++) {
+    }
+}
 
 int Random(int min,int  max)
 {
@@ -161,6 +168,8 @@ void impriprimir()
 
 void moverarriba(int x,int y,char c)
 {
+    char aux;
+    duerme();
     if(mapa[x][y-1]=='x'){
     }else{
         if(mapa[x][y-1]=='.'){
@@ -172,11 +181,46 @@ void moverarriba(int x,int y,char c)
                 mapa[x][y]='+';
             }
         }
-        position[1] -= 1;
+        switch (c) {
+            case 'c':
+                if(mapa[x][y-1] == 'b' || mapa[x][y-1] == 'r' || mapa[x][y-1] == 'i'){
+                    aux = mapa[x][y-1];
+                    mapa[x][y-1]=c;
+                    mapa[x][y]=aux;
+                }
+                position[0][1] -= 1;
+                break;
+            case 'b':
+                if(mapa[x][y-1] == 'c' || mapa[x][y-1] == 'r' || mapa[x][y-1] == 'i'){
+                    aux = mapa[x][y-1];
+                    mapa[x][y-1]=c;
+                    mapa[x][y]=aux;
+                }
+                position[1][1] -= 1;
+                break;
+            case 'r':
+                if(mapa[x][y-1] == 'b' || mapa[x][y-1] == 'c' || mapa[x][y-1] == 'i'){
+                    aux = mapa[x][y-1];
+                    mapa[x][y-1]=c;
+                    //mapa[x][y]=aux;
+                }
+                position[2][1] -= 1;
+                break;
+            case 'i':
+                if(mapa[x][y-1] == 'b' || mapa[x][y-1] == 'r' || mapa[x][y-1] == 'c'){
+                    aux = mapa[x][y-1];
+                    mapa[x][y-1]=c;
+                    //mapa[x][y]=aux;
+                }
+                position[3][1] -= 1;
+                break;
+        }
     }
     
 }
 void moverabajo(int x,int y,char c){
+    duerme();
+    char aux;
     if(mapa[x][y+1]=='x'){
     }else{
         if(mapa[x][y+1]=='.'){
@@ -188,13 +232,48 @@ void moverabajo(int x,int y,char c){
                 mapa[x][y]='+';
             }
         }
-        position[1] += 1;
+        switch (c) {
+            case 'c':
+                if(mapa[x][y+1] == 'b' || mapa[x][y+1] == 'r' || mapa[x][y+1] == 'i'){
+                    aux = mapa[x][y+1];
+                    mapa[x][y+1]=c;
+                    //mapa[x][y]=aux;
+                }
+                position[0][1] += 1;
+                break;
+            case 'b':
+                if(mapa[x][y+1] == 'c' || mapa[x][y+1] == 'r' || mapa[x][y+1] == 'i'){
+                    aux = mapa[x][y+1];
+                    mapa[x][y+1]=c;
+                    //mapa[x][y]=aux;
+                }
+                position[1][1] += 1;
+                break;
+            case 'r':
+                if(mapa[x][y+1] == 'b' || mapa[x][y+1] == 'c' || mapa[x][y+1] == 'i'){
+                    aux = mapa[x][y+1];
+                    mapa[x][y+1]=c;
+                    //mapa[x][y]=aux;
+                }
+                position[2][1] += 1;
+                break;
+            case 'i':
+                if(mapa[x][y+1] == 'b' || mapa[x][y+1] == 'r' || mapa[x][y+1] == 'c'){
+                    aux = mapa[x][y+1];
+                    mapa[x][y+1]=c;
+                    //mapa[x][y]=aux;
+                }
+                position[3][1] += 1;
+                break;
+        }
     }
     
 }
 
 void moverderecha(int x,int y,char c)
 {
+    char aux;
+    duerme();
     if(mapa[x+1][y]=='x'){
     }else{
         if(mapa[x+1][y]=='.'){
@@ -205,14 +284,50 @@ void moverderecha(int x,int y,char c)
                 mapa[x+1][y]=c;
                 mapa[x][y]='+';
             }
+            
         }
-        position[0] += 1;
+        switch (c) {
+            case 'c':
+                if(mapa[x+1][y] == 'b' || mapa[x+1][y] == 'r' || mapa[x+1][y] == 'i'){
+                    aux = mapa[x+1][y];
+                    mapa[x+1][y]=c;
+                    mapa[x][y]=aux;
+                }
+                position[0][0] += 1;
+                break;
+            case 'b':
+                if(mapa[x+1][y] == 'c' || mapa[x+1][y] == 'r' || mapa[x+1][y] == 'i'){
+                    aux = mapa[x+1][y];
+                    mapa[x+1][y]=c;
+                    mapa[x][y]=aux;
+                }
+                position[1][0] += 1;
+                break;
+            case 'r':
+                if(mapa[x+1][y] == 'b' || mapa[x+1][y] == 'c' || mapa[x+1][y] == 'i'){
+                    aux = mapa[x+1][y];
+                    mapa[x+1][y]=c;
+                    mapa[x][y]=aux;
+                }
+                position[2][0] += 1;
+                break;
+            case 'i':
+                if(mapa[x+1][y] == 'b' || mapa[x+1][y] == 'r' || mapa[x+1][y] == 'c'){
+                    aux = mapa[x+1][y];
+                    mapa[x+1][y]=c;
+                    mapa[x][y]=aux;
+                }
+                position[3][0] += 1;
+                break;
+        }
     }
     
 }
 
 void moverizquierda(int x,int y,char c)
 {
+    char aux;
+    duerme();
     if(mapa[x-1][y]=='x'){
     }else{
         if(mapa[x-1][y]=='.'){
@@ -224,7 +339,40 @@ void moverizquierda(int x,int y,char c)
                 mapa[x][y]='+';
             }
         }
-        position[0] -= 1;
+        switch (c) {
+            case 'c':
+                if(mapa[x-1][y] == 'b' || mapa[x-1][y] == 'r' || mapa[x-1][y] == 'i'){
+                    aux = mapa[x-1][y];
+                    mapa[x-1][y]=c;
+                    mapa[x][y]=aux;
+                }
+                position[0][0] -= 1;
+                break;
+            case 'b':
+                if(mapa[x-1][y] == 'c' || mapa[x-1][y] == 'r' || mapa[x-1][y] == 'i'){
+                    aux = mapa[x-1][y];
+                    mapa[x-1][y]=c;
+                    mapa[x][y]=aux;
+                }
+                position[1][0] -= 1;
+                break;
+            case 'r':
+                if(mapa[x-1][y] == 'b' || mapa[x-1][y] == 'c' || mapa[x-1][y] == 'i'){
+                    aux = mapa[x-1][y];
+                    mapa[x-1][y]=c;
+                    mapa[x][y]=aux;
+                }
+                position[2][0] -= 1;
+                break;
+            case 'i':
+                if(mapa[x-1][y] == 'b' || mapa[x-1][y] == 'r' || mapa[x-1][y] == 'c'){
+                    aux = mapa[x-1][y];
+                    mapa[x-1][y]=c;
+                    mapa[x][y]=aux;
+                }
+                position[3][0] -= 1;
+                break;
+        }
     }
     
 }
@@ -477,21 +625,69 @@ void display(void){
     int random = Random(1, 4);
     switch (random) {
         case 1:
-            moverizquierda(position[0], position[1],'c');
+            moverizquierda(position[0][0], position[0][1],'c');
             break;
         case 2:
-            moverderecha(position[0], position[1],'c');
+            moverderecha(position[0][0], position[0][1],'c');
             break;
         case 3:
-            moverarriba(position[0], position[1],'c');
+            moverarriba(position[0][0], position[0][1],'c');
             break;
         case 4:
-            moverabajo(position[0], position[1],'c');
+            moverabajo(position[0][0], position[0][1],'c');
+            break;
+    }
+    random = Random(1, 4);
+    switch (random) {
+        case 1:
+            moverizquierda(position[1][0], position[1][1],'b');
+            break;
+        case 2:
+            moverderecha(position[1][0], position[1][1],'b');
+            break;
+        case 3:
+            moverarriba(position[1][0], position[1][1],'b');
+            break;
+        case 4:
+            moverabajo(position[1][0], position[1][1],'b');
+            break;
+    }
+    random = Random(1, 4);
+    switch (random) {
+        case 1:
+            moverizquierda(position[2][0], position[2][1],'r');
+            break;
+        case 2:
+            moverderecha(position[2][0], position[2][1],'r');
+            break;
+        case 3:
+            moverarriba(position[2][0], position[2][1],'r');
+            break;
+        case 4:
+            moverabajo(position[2][0], position[2][1],'r');
+            break;
+    }
+    random = Random(1, 4);
+    switch (random) {
+        case 1:
+            moverizquierda(position[3][0], position[3][1],'i');
+            break;
+        case 2:
+            moverderecha(position[3][0], position[3][1],'i');
+            break;
+        case 3:
+            moverarriba(position[3][0], position[3][1],'i');
+            break;
+        case 4:
+            moverabajo(position[3][0], position[3][1],'i');
             break;
     }
     
+    
     if(vidas <= 0){
         Texto("Perdiste", 0, 0, 2);
+        sleep(4);
+        exit(0);
     }else{
         
     }
@@ -533,6 +729,14 @@ void reload(){
     xpc=2;
     ypc=3;
     vidas--;
+    position[0][0] = 7;
+    position[0][1] = 22;
+    position[1][0] = 27;
+    position[1][1] = 18;
+    position[2][0] = 5;
+    position[2][1] = 38;
+    position[3][0] = 37;
+    position[3][1] = 35;
     sleep(2);
 }
 

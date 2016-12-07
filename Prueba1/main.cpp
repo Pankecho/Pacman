@@ -10,6 +10,7 @@
 #include <thread>
 using namespace std;
 
+int tiempo = 0;
 GLdouble anguloY=0;
 GLdouble anguloX=0;
 GLdouble anguloZ=0;
@@ -110,12 +111,13 @@ GLfloat position[4][2] = {{7,22},{27,18},{5,38},{37,35}};
 
 string puntaje = "Puntaje: ";
 string vida = "Vidas: ";
-bool comible = false;
+bool comible = true;
 int vidas = 3;
 
 void duerme();
 void reload();
 int Random(int min, int max);
+void impriprimir();
 
 void duerme(){
     for (int i = 0; i < 8000000; i++) {
@@ -172,46 +174,25 @@ void moverarriba(int x,int y,char c)
     duerme();
     if(mapa[x][y-1]=='x'){
     }else{
-        if(mapa[x][y-1]=='.'){
-            mapa[x][y-1]=c;
-            mapa[x][y]='.';
-        }else{
-            if(mapa[x][y-1]=='+'){
-                mapa[x][y-1]=c;
-                mapa[x][y]='+';
-            }
+        if(mapa[x][y-1] == 'p'){
+            impriprimir();
+            reload();
+        }else if(mapa[x][y-1] != c){
+            aux = mapa[x][y-1];
+            mapa[x][y-1] = c;
+            mapa[x][y] = aux;
         }
         switch (c) {
             case 'c':
-                if(mapa[x][y-1] == 'b' || mapa[x][y-1] == 'r' || mapa[x][y-1] == 'i'){
-                    aux = mapa[x][y-1];
-                    mapa[x][y-1]=c;
-                    mapa[x][y]=aux;
-                }
                 position[0][1] -= 1;
                 break;
             case 'b':
-                if(mapa[x][y-1] == 'c' || mapa[x][y-1] == 'r' || mapa[x][y-1] == 'i'){
-                    aux = mapa[x][y-1];
-                    mapa[x][y-1]=c;
-                    mapa[x][y]=aux;
-                }
                 position[1][1] -= 1;
                 break;
             case 'r':
-                if(mapa[x][y-1] == 'b' || mapa[x][y-1] == 'c' || mapa[x][y-1] == 'i'){
-                    aux = mapa[x][y-1];
-                    mapa[x][y-1]=c;
-                    //mapa[x][y]=aux;
-                }
                 position[2][1] -= 1;
                 break;
             case 'i':
-                if(mapa[x][y-1] == 'b' || mapa[x][y-1] == 'r' || mapa[x][y-1] == 'c'){
-                    aux = mapa[x][y-1];
-                    mapa[x][y-1]=c;
-                    //mapa[x][y]=aux;
-                }
                 position[3][1] -= 1;
                 break;
         }
@@ -223,46 +204,25 @@ void moverabajo(int x,int y,char c){
     char aux;
     if(mapa[x][y+1]=='x'){
     }else{
-        if(mapa[x][y+1]=='.'){
-            mapa[x][y+1]=c;
-            mapa[x][y]='.';
-        }else{
-            if(mapa[x][y+1]=='+'){
-                mapa[x][y+1]=c;
-                mapa[x][y]='+';
-            }
+        if(mapa[x][y+1] == 'p'){
+            impriprimir();
+            reload();
+        }else if(mapa[x][y+1] != c){
+            aux = mapa[x][y+1];
+            mapa[x][y+1] = c;
+            mapa[x][y] = aux;
         }
         switch (c) {
             case 'c':
-                if(mapa[x][y+1] == 'b' || mapa[x][y+1] == 'r' || mapa[x][y+1] == 'i'){
-                    aux = mapa[x][y+1];
-                    mapa[x][y+1]=c;
-                    //mapa[x][y]=aux;
-                }
                 position[0][1] += 1;
                 break;
             case 'b':
-                if(mapa[x][y+1] == 'c' || mapa[x][y+1] == 'r' || mapa[x][y+1] == 'i'){
-                    aux = mapa[x][y+1];
-                    mapa[x][y+1]=c;
-                    //mapa[x][y]=aux;
-                }
                 position[1][1] += 1;
                 break;
             case 'r':
-                if(mapa[x][y+1] == 'b' || mapa[x][y+1] == 'c' || mapa[x][y+1] == 'i'){
-                    aux = mapa[x][y+1];
-                    mapa[x][y+1]=c;
-                    //mapa[x][y]=aux;
-                }
                 position[2][1] += 1;
                 break;
             case 'i':
-                if(mapa[x][y+1] == 'b' || mapa[x][y+1] == 'r' || mapa[x][y+1] == 'c'){
-                    aux = mapa[x][y+1];
-                    mapa[x][y+1]=c;
-                    //mapa[x][y]=aux;
-                }
                 position[3][1] += 1;
                 break;
         }
@@ -276,47 +236,25 @@ void moverderecha(int x,int y,char c)
     duerme();
     if(mapa[x+1][y]=='x'){
     }else{
-        if(mapa[x+1][y]=='.'){
-            mapa[x+1][y]=c;
-            mapa[x][y]='.';
-        }else{
-            if(mapa[x+1][y]=='+'){
-                mapa[x+1][y]=c;
-                mapa[x][y]='+';
-            }
-            
+        if(mapa[x+1][y] == 'p'){
+            impriprimir();
+            reload();
+        }else if(mapa[x+1][y] != c){
+            aux = mapa[x+1][y];
+            mapa[x+1][y] = c;
+            mapa[x][y] = aux;
         }
         switch (c) {
             case 'c':
-                if(mapa[x+1][y] == 'b' || mapa[x+1][y] == 'r' || mapa[x+1][y] == 'i'){
-                    aux = mapa[x+1][y];
-                    mapa[x+1][y]=c;
-                    mapa[x][y]=aux;
-                }
                 position[0][0] += 1;
                 break;
             case 'b':
-                if(mapa[x+1][y] == 'c' || mapa[x+1][y] == 'r' || mapa[x+1][y] == 'i'){
-                    aux = mapa[x+1][y];
-                    mapa[x+1][y]=c;
-                    mapa[x][y]=aux;
-                }
                 position[1][0] += 1;
                 break;
             case 'r':
-                if(mapa[x+1][y] == 'b' || mapa[x+1][y] == 'c' || mapa[x+1][y] == 'i'){
-                    aux = mapa[x+1][y];
-                    mapa[x+1][y]=c;
-                    mapa[x][y]=aux;
-                }
                 position[2][0] += 1;
                 break;
             case 'i':
-                if(mapa[x+1][y] == 'b' || mapa[x+1][y] == 'r' || mapa[x+1][y] == 'c'){
-                    aux = mapa[x+1][y];
-                    mapa[x+1][y]=c;
-                    mapa[x][y]=aux;
-                }
                 position[3][0] += 1;
                 break;
         }
@@ -330,46 +268,25 @@ void moverizquierda(int x,int y,char c)
     duerme();
     if(mapa[x-1][y]=='x'){
     }else{
-        if(mapa[x-1][y]=='.'){
-            mapa[x-1][y]=c;
-            mapa[x][y]='.';
-        }else{
-            if(mapa[x-1][y]=='+'){
-                mapa[x-1][y]=c;
-                mapa[x][y]='+';
-            }
+        if(mapa[x-1][y] == 'p'){
+            impriprimir();
+            reload();
+        }else if(mapa[x-1][y] != c){
+            aux = mapa[x-1][y];
+            mapa[x-1][y] = c;
+            mapa[x][y] = aux;
         }
-        switch (c) {
+        switch (c){
             case 'c':
-                if(mapa[x-1][y] == 'b' || mapa[x-1][y] == 'r' || mapa[x-1][y] == 'i'){
-                    aux = mapa[x-1][y];
-                    mapa[x-1][y]=c;
-                    mapa[x][y]=aux;
-                }
                 position[0][0] -= 1;
                 break;
             case 'b':
-                if(mapa[x-1][y] == 'c' || mapa[x-1][y] == 'r' || mapa[x-1][y] == 'i'){
-                    aux = mapa[x-1][y];
-                    mapa[x-1][y]=c;
-                    mapa[x][y]=aux;
-                }
                 position[1][0] -= 1;
                 break;
             case 'r':
-                if(mapa[x-1][y] == 'b' || mapa[x-1][y] == 'c' || mapa[x-1][y] == 'i'){
-                    aux = mapa[x-1][y];
-                    mapa[x-1][y]=c;
-                    mapa[x][y]=aux;
-                }
                 position[2][0] -= 1;
                 break;
             case 'i':
-                if(mapa[x-1][y] == 'b' || mapa[x-1][y] == 'r' || mapa[x-1][y] == 'c'){
-                    aux = mapa[x-1][y];
-                    mapa[x-1][y]=c;
-                    mapa[x][y]=aux;
-                }
                 position[3][0] -= 1;
                 break;
         }
@@ -457,33 +374,64 @@ void pintar_matriz(){
                 dibujarCirculo(tmpx,tmpy,.04,0.02,1.0,1.0,0.0);
             if(mapa[i][j]=='o')
                 dibujarCubo(tmpx,tmpy,.10);
-            if(mapa[i][j]=='c'){
-                dibujarCirculo(tmpx,tmpy,0.1,.10,1.0,0.5,0.0);
-                dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-                dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-            }
-            if(mapa[i][j]=='b'){
-                dibujarCirculo(tmpx,tmpy,0.1,.10,1.0,0.0,0.0);
-                dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-                dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-            }
-            if(mapa[i][j]=='i'){
-                dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
-                dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-                dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-            }
-            if(mapa[i][j]=='r'){
-                dibujarCirculo(tmpx,tmpy,0.1,.10,1.0,0.4,0.7);
-                dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-                dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+            if(comible){
+                if(mapa[i][j]=='c'){
+                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                }
+                if(mapa[i][j]=='b'){
+                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                }
+                if(mapa[i][j]=='i'){
+                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                }
+                if(mapa[i][j]=='r'){
+                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                }
+            }else{
+                if(mapa[i][j]=='c'){
+                    dibujarCirculo(tmpx,tmpy,0.1,.10,1.0,0.5,0.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                }
+                if(mapa[i][j]=='b'){
+                    dibujarCirculo(tmpx,tmpy,0.1,.10,1.0,0.0,0.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                }
+                if(mapa[i][j]=='i'){
+                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                }
+                if(mapa[i][j]=='r'){
+                    dibujarCirculo(tmpx,tmpy,0.1,.10,1.0,0.4,0.7);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                }
             }
             tmpy-=0.1;
         }
@@ -626,70 +574,40 @@ void display(void){
     switch (random) {
         case 1:
             moverizquierda(position[0][0], position[0][1],'c');
-            break;
-        case 2:
-            moverderecha(position[0][0], position[0][1],'c');
-            break;
-        case 3:
-            moverarriba(position[0][0], position[0][1],'c');
-            break;
-        case 4:
-            moverabajo(position[0][0], position[0][1],'c');
-            break;
-    }
-    random = Random(1, 4);
-    switch (random) {
-        case 1:
+            moverizquierda(position[3][0], position[3][1],'i');
             moverizquierda(position[1][0], position[1][1],'b');
-            break;
-        case 2:
-            moverderecha(position[1][0], position[1][1],'b');
-            break;
-        case 3:
-            moverarriba(position[1][0], position[1][1],'b');
-            break;
-        case 4:
-            moverabajo(position[1][0], position[1][1],'b');
-            break;
-    }
-    random = Random(1, 4);
-    switch (random) {
-        case 1:
             moverizquierda(position[2][0], position[2][1],'r');
             break;
         case 2:
+            moverderecha(position[0][0], position[0][1],'c');
+            moverderecha(position[3][0], position[3][1],'i');
+            moverderecha(position[1][0], position[1][1],'b');
             moverderecha(position[2][0], position[2][1],'r');
             break;
         case 3:
+            moverarriba(position[0][0], position[0][1],'c');
+            moverarriba(position[3][0], position[3][1],'i');
+            moverarriba(position[1][0], position[1][1],'b');
             moverarriba(position[2][0], position[2][1],'r');
             break;
         case 4:
+            moverabajo(position[0][0], position[0][1],'c');
+            moverabajo(position[3][0], position[3][1],'i');
+            moverabajo(position[1][0], position[1][1],'b');
             moverabajo(position[2][0], position[2][1],'r');
             break;
     }
-    random = Random(1, 4);
-    switch (random) {
-        case 1:
-            moverizquierda(position[3][0], position[3][1],'i');
-            break;
-        case 2:
-            moverderecha(position[3][0], position[3][1],'i');
-            break;
-        case 3:
-            moverarriba(position[3][0], position[3][1],'i');
-            break;
-        case 4:
-            moverabajo(position[3][0], position[3][1],'i');
-            break;
-    }
-    
     
     if(vidas <= 0){
         Texto("Perdiste", 0, 0, 2);
         sleep(4);
         exit(0);
+    }
+    if(comible && tiempo < 100){
+        tiempo++;
     }else{
-        
+        comible = false;
+        tiempo = 0;
     }
     
     glPopMatrix();

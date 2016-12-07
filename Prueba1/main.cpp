@@ -7,6 +7,7 @@
 #define Pi 3.1416
 #include <math.h>
 #include <string>
+#include <thread>
 using namespace std;
 
 GLdouble anguloY=0;
@@ -105,10 +106,20 @@ char copia[42][42]= {
     "ooooooooooooooooooooooooooooooooooooooooo",
 };
 
+GLfloat position[2] = {7,22};
 string puntaje = "Puntaje: ";
+string vida = "Vidas: ";
 bool comible = false;
+int vidas = 3;
 
 void reload();
+int Random(int min, int max);
+
+int Random(int min,int  max)
+{
+    int output = min + (rand() % (int)(max - min + 1));
+    return output;
+}
 
 void Texto(char *string,GLfloat x,GLfloat y,GLfloat z){
     char *c;
@@ -150,67 +161,71 @@ void impriprimir()
 
 void moverarriba(int x,int y,char c)
 {
-    if(mapa[x][y-1]=='x')
-    {}else{
-        if(mapa[x][y-1]=='.')
-        {	mapa[x][y-1]=c;
+    if(mapa[x][y-1]=='x'){
+    }else{
+        if(mapa[x][y-1]=='.'){
+            mapa[x][y-1]=c;
             mapa[x][y]='.';
         }else{
-            if(mapa[x][y-1]=='+')
+            if(mapa[x][y-1]=='+'){
                 mapa[x][y-1]=c;
-            mapa[x][y]='+';
-            
+                mapa[x][y]='+';
+            }
         }
+        position[1] -= 1;
     }
     
 }
-void moverabajo(int x,int y,char c)
-{
-    if(mapa[x][y+1]=='x')
-    {}else{
-        if(mapa[x][y+1]=='.')
-        {	mapa[x][y+1]=c;
+void moverabajo(int x,int y,char c){
+    if(mapa[x][y+1]=='x'){
+    }else{
+        if(mapa[x][y+1]=='.'){
+            mapa[x][y+1]=c;
             mapa[x][y]='.';
         }else{
-            if(mapa[x][y+1]=='+')
+            if(mapa[x][y+1]=='+'){
                 mapa[x][y+1]=c;
-            mapa[x][y]='+';
-            
+                mapa[x][y]='+';
+            }
         }
+        position[1] += 1;
     }
-	   
+    
 }
 
 void moverderecha(int x,int y,char c)
 {
-    if(mapa[x+1][y]=='x')
-    {}else{
-        if(mapa[x+1][y]=='.')
-        {	mapa[x+1][y]=c;
+    if(mapa[x+1][y]=='x'){
+    }else{
+        if(mapa[x+1][y]=='.'){
+            mapa[x+1][y]=c;
             mapa[x][y]='.';
         }else{
-            if(mapa[x+1][y]=='+')
+            if(mapa[x+1][y]=='+'){
                 mapa[x+1][y]=c;
-            mapa[x][y]='+';
-            
+                mapa[x][y]='+';
+            }
         }
+        position[0] += 1;
     }
     
 }
 
 void moverizquierda(int x,int y,char c)
 {
-    if(mapa[x-1][y]=='x')
-    {}else
-        if(mapa[x-1][y]=='.')
-        {	mapa[x-1][y]=c;
+    if(mapa[x-1][y]=='x'){
+    }else{
+        if(mapa[x-1][y]=='.'){
+            mapa[x-1][y]=c;
             mapa[x][y]='.';
         }else{
-            if(mapa[x-1][y]=='+')
+            if(mapa[x-1][y]=='+'){
                 mapa[x-1][y]=c;
-            mapa[x][y]='+';
-            
+                mapa[x][y]='+';
+            }
         }
+        position[0] -= 1;
+    }
     
 }
 
@@ -225,7 +240,6 @@ void dibujarCirculo(GLfloat px,GLfloat py,GLfloat pz,GLfloat escala,GLfloat c1,G
     glColor3f(c1,c2,c3 );
     glutSolidSphere(escala,15,15);
     glPopMatrix();
-    
 }
 
 
@@ -453,12 +467,38 @@ void display(void){
     string lol = puntaje + std::to_string(puntos());
     char array[lol.size()+1];
     strcpy(array, lol.c_str());
-    Texto(array,0,-2.5,.50);
+    Texto(array,-2,-2.5,.50);
+    
+    lol = vida + std::to_string(vidas);
+    char array1[lol.size()+1];
+    strcpy(array1, lol.c_str());
+    Texto(array1,2,-2.5,.50);
+    
+    int random = Random(1, 4);
+    switch (random) {
+        case 1:
+            moverizquierda(position[0], position[1],'c');
+            break;
+        case 2:
+            moverderecha(position[0], position[1],'c');
+            break;
+        case 3:
+            moverarriba(position[0], position[1],'c');
+            break;
+        case 4:
+            moverabajo(position[0], position[1],'c');
+            break;
+    }
+    
+    if(vidas <= 0){
+        Texto("Perdiste", 0, 0, 2);
+    }else{
+        
+    }
     
     glPopMatrix();
     glFlush();
     glutSwapBuffers();
-    
 }
 
 void reshape(int w,int h){
@@ -478,7 +518,6 @@ void keyboard(unsigned char key,int x,int y){
 }
 
 void reload(){
-    
     int i;
     for (i = 0; i < 42; i++) {
         strcpy(mapa[i], copia[i]);
@@ -493,6 +532,8 @@ void reload(){
     yi=0;
     xpc=2;
     ypc=3;
+    vidas--;
+    sleep(2);
 }
 
 int main(int argc,char** argv){
@@ -508,7 +549,6 @@ int main(int argc,char** argv){
     glutReshapeFunc(reshape);
     glutIdleFunc(display);
     glutSpecialFunc(ArrowKey);
-    glutMainLoop();
-    
+        glutMainLoop();
     return 0;	
 }

@@ -9,7 +9,8 @@
 #include <string>
 #include <thread>
 using namespace std;
-
+int bandera = 0;
+int puntoF = 0;
 int tiempo = 0;
 GLdouble anguloY=0;
 GLdouble anguloX=0;
@@ -28,9 +29,9 @@ char mapa[42][42]={
     "oxx+xxoxx+xxxxxxxx+xox+xxxxxxxxx+xxoxxxxo",
     "oxx+xxoxx+xxooooxx+xox+xxoooooxx+xxoxxxxo",
     "oxx+xxxxx+xxooooxx+xox+xxoooooxx+xxoxrxxo",
-    "oxx+++++++xxxxxxxx+xxx+xxxxxxxxx+xxxx+xxo",
-    "oxx+++++++++++++++++++c+++++++++++++++xxo",
-    "oxx+xxxxxxxxxxxxxx+xxx+xxxxxxxxxxxxxx+xxo",
+    "vvv+++++++xxxxxxxx+xxx+xxxxxxxxx+xxxx+vvv",
+    "xxx+++++++++++++++++++c+++++++++++++++xxx",
+    "xxx+xxxxxxxxxxxxxx+xxx+xxxxxxxxxxxxxx+xxx",
     "oxx+xooooooooooxxx+xox+xoooooooooooox+xxo",
     "oxx+xooxxxxxxxxxxx+xxx+xxxxxxxxxxxxox+xxo",
     "oxx+xoox+++++++++++xox++++++++++xooox+xxo",
@@ -51,7 +52,7 @@ char mapa[42][42]={
     "oxx+xoxx+xooooooox+xox+xooooooox+xxox+xxo",
     "oxx+xoxx+xoooooooxbxox+xooooooox+xxox+xxo",
     "oxx+xoxx+xxxxxxxxx+xox+xxxxxxxxx+xxox+xxo",
-    "oxx+xoxx+++++++++++xox+++++++++++xxox+xxo",
+    "oxx+xoxx++++++++++sxox+++++++++++xxox+xxo",
     "oxx+xoxxxxxxxxxxxx+xox+xxxxxxxxxxxxox+xxo",
     "oxx+xoooooooooooox+xox+xoooooooooooox+xxo",
     "oxx+xxxxxxxxxxxxxx+xxx+xxxxxxxxxxxxxx+xxo",
@@ -64,16 +65,16 @@ char mapa[42][42]={
     "ooooooooooooooooooooooooooooooooooooooooo",
 };
 
-char copia[42][42]= {
+char copia[42][42]={
     "ooooooooooooooooooooooooooooooooooooooooo",
     "oxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxo",
     "oxxpxxoxx++++++++++xxx+++++++++++xxoxxxxo",
     "oxx+xxoxx+xxxxxxxx+xox+xxxxxxxxx+xxoxxxxo",
     "oxx+xxoxx+xxooooxx+xox+xxoooooxx+xxoxxxxo",
     "oxx+xxxxx+xxooooxx+xox+xxoooooxx+xxoxrxxo",
-    "oxx+++++++xxxxxxxx+xxx+xxxxxxxxx+xxxx+xxo",
-    "oxx+++++++++++++++++++c+++++++++++++++xxo",
-    "oxx+xxxxxxxxxxxxxx+xxx+xxxxxxxxxxxxxx+xxo",
+    "vvv+++++++xxxxxxxx+xxx+xxxxxxxxx+xxxx+vvv",
+    "xxx+++++++++++++++++++c+++++++++++++++xxx",
+    "xxx+xxxxxxxxxxxxxx+xxx+xxxxxxxxxxxxxx+xxx",
     "oxx+xooooooooooxxx+xox+xoooooooooooox+xxo",
     "oxx+xooxxxxxxxxxxx+xxx+xxxxxxxxxxxxox+xxo",
     "oxx+xoox+++++++++++xox++++++++++xooox+xxo",
@@ -94,7 +95,7 @@ char copia[42][42]= {
     "oxx+xoxx+xooooooox+xox+xooooooox+xxox+xxo",
     "oxx+xoxx+xoooooooxbxox+xooooooox+xxox+xxo",
     "oxx+xoxx+xxxxxxxxx+xox+xxxxxxxxx+xxox+xxo",
-    "oxx+xoxx+++++++++++xox+++++++++++xxox+xxo",
+    "oxx+xoxx++++++++++sxox+++++++++++xxox+xxo",
     "oxx+xoxxxxxxxxxxxx+xox+xxxxxxxxxxxxox+xxo",
     "oxx+xoooooooooooox+xox+xoooooooooooox+xxo",
     "oxx+xxxxxxxxxxxxxx+xxx+xxxxxxxxxxxxxx+xxo",
@@ -111,17 +112,35 @@ GLfloat position[4][2] = {{7,22},{27,18},{5,38},{37,35}};
 
 string puntaje = "Puntaje: ";
 string vida = "Vidas: ";
-bool comible = true;
+bool comible = false;
 int vidas = 3;
 
 void duerme();
 void reload();
 int Random(int min, int max);
 void impriprimir();
+void moverarriba(int x,int y, char c);
+void moverabajo(int x, int y, char c);
+void moverizquierda(int x, int y, char c);
+void moverderecha(int x,int y, char c);
+int mas();
+
+int mas(){
+        int puntos = 0;
+        for(int i=0;i<42;i++){
+            
+            for(int j=0;j<42;j++)
+            {
+                if(mapa[i][j]=='+')
+                    puntos+=1;
+            }
+            
+        }
+        return puntos;
+}
 
 void duerme(){
-    for (int i = 0; i < 8000000; i++) {
-    }
+    
 }
 
 int Random(int min,int  max)
@@ -154,7 +173,7 @@ int puntos()
         }
         
     }
-    return puntos;
+    return puntos + puntoF;
 }
 void impriprimir()
 {
@@ -172,15 +191,21 @@ void moverarriba(int x,int y,char c)
 {
     char aux;
     duerme();
-    if(mapa[x][y-1]=='x'){
+    if(mapa[x][y-1]=='x' || mapa[x][y-1] == 'v'){
     }else{
         if(mapa[x][y-1] == 'p'){
-            impriprimir();
-            reload();
+            if(!comible){
+                impriprimir();
+                reload();
+            }else{
+                return;
+            }
         }else if(mapa[x][y-1] != c){
             aux = mapa[x][y-1];
             mapa[x][y-1] = c;
             mapa[x][y] = aux;
+        }else{
+            //moverabajo(x, y, c);
         }
         switch (c) {
             case 'c':
@@ -202,15 +227,21 @@ void moverarriba(int x,int y,char c)
 void moverabajo(int x,int y,char c){
     duerme();
     char aux;
-    if(mapa[x][y+1]=='x'){
+    if(mapa[x][y+1]=='x'  || mapa[x][y+1] == 'v'){
     }else{
         if(mapa[x][y+1] == 'p'){
-            impriprimir();
-            reload();
+            if(!comible){
+                impriprimir();
+                reload();
+            }else{
+                return;
+            }
         }else if(mapa[x][y+1] != c){
             aux = mapa[x][y+1];
             mapa[x][y+1] = c;
             mapa[x][y] = aux;
+        }else{
+            //moverarriba(x, y, c);
         }
         switch (c) {
             case 'c':
@@ -234,15 +265,21 @@ void moverderecha(int x,int y,char c)
 {
     char aux;
     duerme();
-    if(mapa[x+1][y]=='x'){
+    if(mapa[x+1][y]=='x' || mapa[x+1][y] == 'v'){
     }else{
         if(mapa[x+1][y] == 'p'){
-            impriprimir();
-            reload();
+            if(!comible){
+                impriprimir();
+                reload();
+            }else{
+                return;
+            }
         }else if(mapa[x+1][y] != c){
             aux = mapa[x+1][y];
             mapa[x+1][y] = c;
             mapa[x][y] = aux;
+        }else{
+            //moverizquierda(x, y, c);
         }
         switch (c) {
             case 'c':
@@ -266,15 +303,21 @@ void moverizquierda(int x,int y,char c)
 {
     char aux;
     duerme();
-    if(mapa[x-1][y]=='x'){
+    if(mapa[x-1][y]=='x' || mapa[x-1][y] == 'v'){
     }else{
         if(mapa[x-1][y] == 'p'){
-            impriprimir();
-            reload();
+            if(!comible){
+                impriprimir();
+                reload();
+            }else{
+                return;
+            }
         }else if(mapa[x-1][y] != c){
             aux = mapa[x-1][y];
             mapa[x-1][y] = c;
             mapa[x][y] = aux;
+        }else{
+            //moverderecha(x, y, c);
         }
         switch (c){
             case 'c':
@@ -306,10 +349,6 @@ void dibujarCirculo(GLfloat px,GLfloat py,GLfloat pz,GLfloat escala,GLfloat c1,G
     glutSolidSphere(escala,15,15);
     glPopMatrix();
 }
-
-
-
-
 
 void dibujarCubo(GLfloat px1,GLfloat py1 ,GLfloat pz1){
     //ladoblanco
@@ -374,6 +413,9 @@ void pintar_matriz(){
                 dibujarCirculo(tmpx,tmpy,.04,0.02,1.0,1.0,0.0);
             if(mapa[i][j]=='o')
                 dibujarCubo(tmpx,tmpy,.10);
+            if(mapa[i][j] == 's'){
+                dibujarCirculo(tmpx,tmpy,0.1,.05,1.0,0.0,0.0);
+            }
             if(comible){
                 if(mapa[i][j]=='c'){
                     dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
@@ -440,14 +482,30 @@ void pintar_matriz(){
 }
 
 void ArrowKey(int key,int x,int y){
+    char aux;
     switch (key){
         case GLUT_KEY_RIGHT:
-            if(px < 2 && (mapa[xpc+1][ypc] == 'c' || mapa[xpc+1][ypc] == 'b' || mapa[xpc+1][ypc] == 'i' || mapa[xpc+1][ypc] == 'r') && !comible){
-                Texto("Has perdido",0, 2.5, .30);
-                printf("Muerto");
-                reload();
+            if(px < 2 && (mapa[xpc+1][ypc] == 'c' || mapa[xpc+1][ypc] == 'b' || mapa[xpc+1][ypc] == 'i' || mapa[xpc+1][ypc] == 'r')){
+                aux = mapa[xpc+1][ypc];
+                if(!comible){
+                    Texto("Has perdido",0, 2.5, .30);
+                    printf("Muerto");
+                    reload();
+                }else{
+                    px+=0.1;
+                    mapa[xpc][ypc]='.';
+                    xpc+=1;
+                    mapa[xpc][ypc]='p';
+                    puntoF += 1000;
+                }
             }else{
                 if((mapa[xpc+1][ypc]=='+'||mapa[xpc+1][ypc]=='.')){
+                    px+=0.1;
+                    mapa[xpc][ypc]='.';
+                    xpc+=1;
+                    mapa[xpc][ypc]='p';
+                }else if(mapa[xpc+1][ypc] == 's'){
+                    comible = true;
                     px+=0.1;
                     mapa[xpc][ypc]='.';
                     xpc+=1;
@@ -456,12 +514,26 @@ void ArrowKey(int key,int x,int y){
             }
             break;
         case GLUT_KEY_LEFT:
-            if(px > -2 && (mapa[xpc-1][ypc] == 'c' || mapa[xpc-1][ypc] == 'b' || mapa[xpc-1][ypc] == 'i' || mapa[xpc-1][ypc] == 'r') && !comible){
-                Texto("Has perdido",0, 2.5, .30);
-                 printf("Muerto");
-                reload();
+            if(px > -2 && (mapa[xpc-1][ypc] == 'c' || mapa[xpc-1][ypc] == 'b' || mapa[xpc-1][ypc] == 'i' || mapa[xpc-1][ypc] == 'r')){
+                if(!comible){
+                    Texto("Has perdido",0, 2.5, .30);
+                    printf("Muerto");
+                    reload();
+                }else{
+                    px-=0.1;
+                    mapa[xpc][ypc]='.';
+                    xpc-=1;
+                    mapa[xpc][ypc]='p';
+                    puntoF += 1000;
+                }
             }else{
                 if((mapa[xpc-1][ypc]=='+'||mapa[xpc-1][ypc]=='.')){
+                    px-=0.1;
+                    mapa[xpc][ypc]='.';
+                    xpc-=1;
+                    mapa[xpc][ypc]='p';
+                }else if(mapa[xpc-1][ypc]=='s'){
+                    comible = true;
                     px-=0.1;
                     mapa[xpc][ypc]='.';
                     xpc-=1;
@@ -470,12 +542,33 @@ void ArrowKey(int key,int x,int y){
             }
             break;
         case GLUT_KEY_UP:
-            if(py < 2 && (mapa[xpc][ypc-1] == 'c' || mapa[xpc][ypc-1] == 'b' || mapa[xpc][ypc-1] == 'i' || mapa[xpc][ypc-1] == 'r') && !comible){
-                Texto("Has perdido",0, 2.5, .30);
-                 printf("Muerto");
-                reload();
+            if(xpc==7&&ypc==3){
+                mapa[xpc][ypc]='.';
+                px=-1.3;
+                py=-1.5;
+                mapa[7][37]='p';
+                xpc=7;
+                ypc=37;
+            }else if(py < 2 && (mapa[xpc][ypc-1] == 'c' || mapa[xpc][ypc-1] == 'b' || mapa[xpc][ypc-1] == 'i' || mapa[xpc][ypc-1] == 'r')){
+                if(!comible){
+                    Texto("Has perdido",0, 2.5, .30);
+                    printf("Muerto");
+                    reload();
+                }else{
+                    py+=0.1;
+                    mapa[xpc][ypc]='.';
+                    ypc-=1;
+                    mapa[xpc][ypc]='p';
+                    puntoF += 1000;
+                }
             }else{
                 if((mapa[xpc][ypc-1]=='+'||mapa[xpc][ypc-1]=='.')){
+                    py+=0.1;
+                    mapa[xpc][ypc]='.';
+                    ypc-=1;
+                    mapa[xpc][ypc]='p';
+                }else if (mapa[xpc][ypc-1] == 's'){
+                    comible = true;
                     py+=0.1;
                     mapa[xpc][ypc]='.';
                     ypc-=1;
@@ -484,12 +577,33 @@ void ArrowKey(int key,int x,int y){
             }
             break;
         case GLUT_KEY_DOWN:
-            if(py > -2 && (mapa[xpc][ypc+1] == 'c' || mapa[xpc][ypc+1] == 'b' || mapa[xpc][ypc+1] == 'i' || mapa[xpc][ypc+1] == 'r') && !comible){
-                Texto("Has perdido",0, 2.5, .30);
-                 printf("Muerto");
-                reload();
+            if(xpc==7&&ypc==37){
+                mapa[xpc][ypc]='.';
+                px=-1.3;
+                py=1.9;
+                mapa[7][3]='p';
+                xpc=7;
+                ypc=3;
+            }else if(py > -2 && (mapa[xpc][ypc+1] == 'c' || mapa[xpc][ypc+1] == 'b' || mapa[xpc][ypc+1] == 'i' || mapa[xpc][ypc+1] == 'r')){
+                if(!comible){
+                    Texto("Has perdido",0, 2.5, .30);
+                    printf("Muerto");
+                    reload();
+                }else{
+                    py-=0.1;
+                    mapa[xpc][ypc]='.';
+                    ypc+=1;
+                    mapa[xpc][ypc]='p';
+                    puntoF += 1000;
+                }
             }else{
                 if((mapa[xpc][ypc+1]=='+'||mapa[xpc][ypc+1]=='.')){
+                    py-=0.1;
+                    mapa[xpc][ypc]='.';
+                    ypc+=1;
+                    mapa[xpc][ypc]='p';
+                }else if(mapa[xpc][ypc+1]=='s'){
+                    comible = true;
                     py-=0.1;
                     mapa[xpc][ypc]='.';
                     ypc+=1;
@@ -570,32 +684,37 @@ void display(void){
     strcpy(array1, lol.c_str());
     Texto(array1,2,-2.5,.50);
     
-    int random = Random(1, 4);
-    switch (random) {
-        case 1:
-            moverizquierda(position[0][0], position[0][1],'c');
-            moverizquierda(position[3][0], position[3][1],'i');
-            moverizquierda(position[1][0], position[1][1],'b');
-            moverizquierda(position[2][0], position[2][1],'r');
-            break;
-        case 2:
-            moverderecha(position[0][0], position[0][1],'c');
-            moverderecha(position[3][0], position[3][1],'i');
-            moverderecha(position[1][0], position[1][1],'b');
-            moverderecha(position[2][0], position[2][1],'r');
-            break;
-        case 3:
-            moverarriba(position[0][0], position[0][1],'c');
-            moverarriba(position[3][0], position[3][1],'i');
-            moverarriba(position[1][0], position[1][1],'b');
-            moverarriba(position[2][0], position[2][1],'r');
-            break;
-        case 4:
-            moverabajo(position[0][0], position[0][1],'c');
-            moverabajo(position[3][0], position[3][1],'i');
-            moverabajo(position[1][0], position[1][1],'b');
-            moverabajo(position[2][0], position[2][1],'r');
-            break;
+    bandera++;
+    if(bandera > 5){
+        bandera = 0;
+    }else{
+        if (bandera % 5 == 0){
+            int random = Random(1, 4);
+            char c[4] = {'c','b','r','i'};
+            int rand = Random(0, 3);
+            printf("%d",rand);
+            switch (random) {
+                case 1:
+                    moverizquierda(position[rand][0], position[rand][1],c[rand]);
+                    break;
+                case 2:
+                    moverderecha(position[rand][0], position[rand][1],c[rand]);
+                    break;
+                case 3:
+                    moverarriba(position[rand][0], position[rand][1],c[rand]);
+                    break;
+                case 4:
+                    moverabajo(position[rand][0], position[rand][1],c[rand]);
+                    break;
+            }
+        }
+
+    }
+    
+    if(mas() == 0){
+        Texto("GANASTE", 0, 0, 3);
+        sleep(1);
+        exit(0);
     }
     
     if(vidas <= 0){
@@ -603,7 +722,7 @@ void display(void){
         sleep(4);
         exit(0);
     }
-    if(comible && tiempo < 100){
+    if(comible && tiempo < 800){
         tiempo++;
     }else{
         comible = false;
@@ -632,6 +751,7 @@ void keyboard(unsigned char key,int x,int y){
 }
 
 void reload(){
+    impriprimir();
     int i;
     for (i = 0; i < 42; i++) {
         strcpy(mapa[i], copia[i]);
@@ -655,6 +775,7 @@ void reload(){
     position[2][1] = 38;
     position[3][0] = 37;
     position[3][1] = 35;
+    puntoF = 0;
     sleep(2);
 }
 

@@ -108,12 +108,18 @@ char copia[42][42]={
     "ooooooooooooooooooooooooooooooooooooooooo",
 };
 
+int posCereza[2] = {28,18};
 GLfloat position[4][2] = {{7,22},{27,18},{5,38},{37,35}};
+bool comidoC,comidoB,comidoR,comidoI;
+
+bool comidos[4] = {false,false,false,false};
 
 string puntaje = "Puntaje: ";
 string vida = "Vidas: ";
 bool comible = false;
 int vidas = 3;
+int cereza = 0;
+bool cherry = true;
 
 void duerme();
 void reload();
@@ -338,9 +344,7 @@ void moverizquierda(int x,int y,char c)
 }
 
 
-
-void dibujarCirculo(GLfloat px,GLfloat py,GLfloat pz,GLfloat escala,GLfloat c1,GLfloat c2,GLfloat c3)
-{
+void dibujarCirculo(GLfloat px,GLfloat py,GLfloat pz,GLfloat escala,GLfloat c1,GLfloat c2,GLfloat c3){
     glPushMatrix();
     glTranslatef(px,py,pz);
     glRotatef(45, 0, 1, 1);
@@ -418,32 +422,40 @@ void pintar_matriz(){
             }
             if(comible){
                 if(mapa[i][j]=='c'){
-                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
-                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    if(comidoC){}else{
+                        dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                        dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                        dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                        dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                        dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    }
                 }
                 if(mapa[i][j]=='b'){
-                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
-                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    if(comidoB){}else{
+                        dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                        dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                        dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                        dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                        dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    }
                 }
                 if(mapa[i][j]=='i'){
-                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
-                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    if(comidoI){}else{
+                        dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                        dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                        dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                        dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                        dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    }
                 }
                 if(mapa[i][j]=='r'){
-                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
-                    dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                    dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
-                    dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
-                    dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    if(comidoR){}else{
+                        dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                        dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                        dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
+                        dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                        dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
+                    }
                 }
             }else{
                 if(mapa[i][j]=='c'){
@@ -482,7 +494,7 @@ void pintar_matriz(){
 }
 
 void ArrowKey(int key,int x,int y){
-    char aux;
+    char aux,comer;
     switch (key){
         case GLUT_KEY_RIGHT:
             if(px < 2 && (mapa[xpc+1][ypc] == 'c' || mapa[xpc+1][ypc] == 'b' || mapa[xpc+1][ypc] == 'i' || mapa[xpc+1][ypc] == 'r')){
@@ -492,11 +504,29 @@ void ArrowKey(int key,int x,int y){
                     printf("Muerto");
                     reload();
                 }else{
+                    comer = mapa[xpc+1][ypc];
+                    switch (comer) {
+                        case 'c':
+                            comidoC = true;
+                            break;
+                        case 'b':
+                            comidoB = true;
+                            break;
+                        case 'r':
+                            comidoR = true;
+                            break;
+                        case 'i':
+                            comidoI = true;
+                            break;
+                        default:
+                            break;
+                    }
                     px+=0.1;
                     mapa[xpc][ypc]='.';
                     xpc+=1;
                     mapa[xpc][ypc]='p';
                     puntoF += 1000;
+                    
                 }
             }else{
                 if((mapa[xpc+1][ypc]=='+'||mapa[xpc+1][ypc]=='.')){
@@ -506,6 +536,7 @@ void ArrowKey(int key,int x,int y){
                     mapa[xpc][ypc]='p';
                 }else if(mapa[xpc+1][ypc] == 's'){
                     comible = true;
+                    cherry = true;
                     px+=0.1;
                     mapa[xpc][ypc]='.';
                     xpc+=1;
@@ -520,6 +551,23 @@ void ArrowKey(int key,int x,int y){
                     printf("Muerto");
                     reload();
                 }else{
+                    comer = mapa[xpc-1][ypc];
+                    switch (comer) {
+                        case 'c':
+                            comidoC = true;
+                            break;
+                        case 'b':
+                            comidoB = true;
+                            break;
+                        case 'r':
+                            comidoR = true;
+                            break;
+                        case 'i':
+                            comidoI = true;
+                            break;
+                        default:
+                            break;
+                    }
                     px-=0.1;
                     mapa[xpc][ypc]='.';
                     xpc-=1;
@@ -534,6 +582,7 @@ void ArrowKey(int key,int x,int y){
                     mapa[xpc][ypc]='p';
                 }else if(mapa[xpc-1][ypc]=='s'){
                     comible = true;
+                    cherry = true;
                     px-=0.1;
                     mapa[xpc][ypc]='.';
                     xpc-=1;
@@ -555,6 +604,23 @@ void ArrowKey(int key,int x,int y){
                     printf("Muerto");
                     reload();
                 }else{
+                    comer = mapa[xpc][ypc-1];
+                    switch (comer) {
+                        case 'c':
+                            comidoC = true;
+                            break;
+                        case 'b':
+                            comidoB = true;
+                            break;
+                        case 'r':
+                            comidoR = true;
+                            break;
+                        case 'i':
+                            comidoI = true;
+                            break;
+                        default:
+                            break;
+                    }
                     py+=0.1;
                     mapa[xpc][ypc]='.';
                     ypc-=1;
@@ -569,6 +635,7 @@ void ArrowKey(int key,int x,int y){
                     mapa[xpc][ypc]='p';
                 }else if (mapa[xpc][ypc-1] == 's'){
                     comible = true;
+                    cherry = true;
                     py+=0.1;
                     mapa[xpc][ypc]='.';
                     ypc-=1;
@@ -590,6 +657,23 @@ void ArrowKey(int key,int x,int y){
                     printf("Muerto");
                     reload();
                 }else{
+                    comer = mapa[xpc][ypc+1];
+                    switch (comer) {
+                        case 'c':
+                            comidoC = true;
+                            break;
+                        case 'b':
+                            comidoB = true;
+                            break;
+                        case 'r':
+                            comidoR = true;
+                            break;
+                        case 'i':
+                            comidoI = true;
+                            break;
+                        default:
+                            break;
+                    }
                     py-=0.1;
                     mapa[xpc][ypc]='.';
                     ypc+=1;
@@ -604,6 +688,7 @@ void ArrowKey(int key,int x,int y){
                     mapa[xpc][ypc]='p';
                 }else if(mapa[xpc][ypc+1]=='s'){
                     comible = true;
+                    cherry = true;
                     py-=0.1;
                     mapa[xpc][ypc]='.';
                     ypc+=1;
@@ -695,20 +780,32 @@ void display(void){
             printf("%d",rand);
             switch (random) {
                 case 1:
-                    moverizquierda(position[rand][0], position[rand][1],c[rand]);
+                    if(!comidos[rand])
+                        moverizquierda(position[rand][0], position[rand][1],c[rand]);
                     break;
                 case 2:
-                    moverderecha(position[rand][0], position[rand][1],c[rand]);
+                    if(!comidos[rand])
+                        moverderecha(position[rand][0], position[rand][1],c[rand]);
                     break;
                 case 3:
-                    moverarriba(position[rand][0], position[rand][1],c[rand]);
+                    if(!comidos[rand])
+                        moverarriba(position[rand][0], position[rand][1],c[rand]);
                     break;
                 case 4:
-                    moverabajo(position[rand][0], position[rand][1],c[rand]);
+                    if(!comidos[rand])
+                        moverabajo(position[rand][0], position[rand][1],c[rand]);
                     break;
             }
         }
 
+    }
+    
+    if(cherry && cereza < 2000){
+        cereza++;
+    }else{
+        cherry = false;
+        cereza = 0;
+        mapa[posCereza[0]][posCereza[1]] = 's';
     }
     
     if(mas() == 0){
@@ -727,6 +824,8 @@ void display(void){
     }else{
         comible = false;
         tiempo = 0;
+        comidoB = comidoC = comidoI = comidoR = false;
+        comidos[0] = comidos[1] = comidos[2] = comidos[3] = false;
     }
     
     glPopMatrix();

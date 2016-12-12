@@ -8,6 +8,7 @@
 #include <math.h>
 #include <string>
 #include <thread>
+//#include <windows.h>
 using namespace std;
 int bandera = 0;
 int puntoF = 0;
@@ -130,6 +131,17 @@ void moverabajo(int x, int y, char c);
 void moverizquierda(int x, int y, char c);
 void moverderecha(int x,int y, char c);
 int mas();
+void Mensaje(char *string,GLfloat x,GLfloat y,GLfloat z);
+
+void Mensaje(char *string,GLfloat x,GLfloat y,GLfloat z){
+    char *c;
+    glRasterPos3f(x,y,z);
+    glColor3f(0.0, 0.0, 0.0);
+    for (c=string; *c !='\0'; c++){
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *c);
+    }
+}
+
 
 int mas(){
         int puntos = 0;
@@ -824,21 +836,21 @@ void display(void){
     }else{
         cherry = false;
         cereza = 0;
-        if(mapa[posCereza[0]][posCereza[1]] == '.' || mapa[posCereza[0]][posCereza[1]] == '+'){
+        if(mapa[posCereza[0]][posCereza[1]] == 'x' || mapa[posCereza[0]][posCereza[1]] == '.'){
             mapa[posCereza[0]][posCereza[1]] = 's';
-        }else{
-            mapa[posCereza[0]][posCereza[1]-1] = 's';
         }
     }
     
     if(mas() == 0){
-        Texto("GANASTE", 0, 0, 3);
-        sleep(1);
+        glColor3f(0.0, 0.0, 0.0);
+        Mensaje("GANASTE", 0, 0, 0.50);
+        sleep(4);
         exit(0);
     }
     
     if(vidas <= 0){
-        Texto("Perdiste", 0, 0, 2);
+        glColor3f(0.0, 0.0, 0.0);
+        Mensaje("GAME OVER", 0, 0, 0.50);
         sleep(4);
         exit(0);
     }
@@ -902,7 +914,6 @@ void reload(){
 }
 
 int main(int argc,char** argv){
-    
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB);
     glutInitWindowSize(1900,700);	

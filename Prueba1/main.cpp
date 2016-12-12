@@ -476,7 +476,7 @@ void pintar_matriz(){
                     dibujarCirculo(tmpx+0.03,tmpy,0.20,.02,0.0,0.0,0.0);
                 }
                 if(mapa[i][j]=='i'){
-                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.0,1.0);
+                    dibujarCirculo(tmpx,tmpy,0.1,.10,0.0,0.5,0.0);
                     dibujarCirculo(tmpx-0.03,tmpy,0.18,.03,1.0,1.0,1.0);
                     dibujarCirculo(tmpx+0.03,tmpy,0.18,.03,1.0,1.0,1.0);
                     dibujarCirculo(tmpx-0.03,tmpy,0.20,.02,0.0,0.0,0.0);
@@ -510,15 +510,19 @@ void ArrowKey(int key,int x,int y){
                     comer = mapa[xpc+1][ypc];
                     switch (comer) {
                         case 'c':
+                            comidos[0] = true;
                             comidoC = true;
                             break;
                         case 'b':
+                            comidos[1] = true;
                             comidoB = true;
                             break;
                         case 'r':
+                            comidos[2] = true;
                             comidoR = true;
                             break;
                         case 'i':
+                            comidos[3] = true;
                             comidoI = true;
                             break;
                         default:
@@ -557,15 +561,19 @@ void ArrowKey(int key,int x,int y){
                     comer = mapa[xpc-1][ypc];
                     switch (comer) {
                         case 'c':
+                            comidos[0] = true;
                             comidoC = true;
                             break;
                         case 'b':
+                            comidos[1] = true;
                             comidoB = true;
                             break;
                         case 'r':
+                            comidos[2] = true;
                             comidoR = true;
                             break;
                         case 'i':
+                            comidos[3] = true;
                             comidoI = true;
                             break;
                         default:
@@ -610,15 +618,19 @@ void ArrowKey(int key,int x,int y){
                     comer = mapa[xpc][ypc-1];
                     switch (comer) {
                         case 'c':
+                            comidos[0] = true;
                             comidoC = true;
                             break;
                         case 'b':
+                            comidos[1] = true;
                             comidoB = true;
                             break;
                         case 'r':
+                            comidos[2] = true;
                             comidoR = true;
                             break;
                         case 'i':
+                            comidos[3] = true;
                             comidoI = true;
                             break;
                         default:
@@ -663,15 +675,19 @@ void ArrowKey(int key,int x,int y){
                     comer = mapa[xpc][ypc+1];
                     switch (comer) {
                         case 'c':
+                            comidos[0] = true;
                             comidoC = true;
                             break;
                         case 'b':
+                            comidos[1] = true;
                             comidoB = true;
                             break;
                         case 'r':
+                            comidos[2] = true;
                             comidoR = true;
                             break;
                         case 'i':
+                            comidos[3] = true;
                             comidoI = true;
                             break;
                         default:
@@ -808,7 +824,11 @@ void display(void){
     }else{
         cherry = false;
         cereza = 0;
-        mapa[posCereza[0]][posCereza[1]] = 's';
+        if(mapa[posCereza[0]][posCereza[1]] == '.' || mapa[posCereza[0]][posCereza[1]] == '+'){
+            mapa[posCereza[0]][posCereza[1]] = 's';
+        }else{
+            mapa[posCereza[0]][posCereza[1]-1] = 's';
+        }
     }
     
     if(mas() == 0){

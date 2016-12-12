@@ -158,8 +158,9 @@ int Random(int min,int  max)
 void Texto(char *string,GLfloat x,GLfloat y,GLfloat z){
     char *c;
     glRasterPos3f(x,y,z);
+    glColor3f(1.0, 1.0, 1.0);
     for (c=string; *c !='\0'; c++){
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *c);
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *c);
     }
 }
 
@@ -363,6 +364,7 @@ void dibujarCubo(GLfloat px1,GLfloat py1 ,GLfloat pz1){
     glVertex3f(px1-0.1,py1+0.1,pz1+0.1);
     glVertex3f(px1-0.1,py1-0.1,pz1+0.1);
     glEnd();
+    
     //ladomorado
     glBegin(GL_POLYGON);
     glColor3f(1.0,0.0,1.0);
@@ -380,6 +382,7 @@ void dibujarCubo(GLfloat px1,GLfloat py1 ,GLfloat pz1){
     glVertex3f(px1-0.1,py1+0.1,pz1-0.1);
     glVertex3f(px1-0.1,py1+0.1,pz1+0.1);
     glEnd();
+    
     //ladoverde
     glBegin(GL_POLYGON);
     glColor3f(0.0,1.0,0.0);

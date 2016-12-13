@@ -170,7 +170,7 @@ int Random(int min,int  max)
 void Texto(char *string,GLfloat x,GLfloat y,GLfloat z){
     char *c;
     glRasterPos3f(x,y,z);
-    glColor3f(1.0, 1.0, 1.0);
+    glColor3f(0.0, 0.0, 0.0);
     for (c=string; *c !='\0'; c++){
         glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *c);
     }
@@ -178,6 +178,24 @@ void Texto(char *string,GLfloat x,GLfloat y,GLfloat z){
 
 void init(void){
     glClearColor(0.0,0.0,0.0,0.0);
+    glShadeModel(GL_SMOOTH);
+    //glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    GLfloat light_0_pos[]={0.0, 0.0, -20.0, 1.0};
+    GLfloat light_0_ambient[]={0.0,0.0,0.0, 1.0};
+    GLfloat light_0_diffuse[]={1.0, 1.0, 1.0, 1.0};
+    GLfloat light_0_specular[]={1.0, 1.0, 1.0, 1.0};
+    GLfloat light_global[] ={0.2,0.2,0.2,1};
+    glLightfv(GL_LIGHT0, GL_POSITION, light_0_pos);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_0_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_0_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_0_specular);
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light_global);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT,GL_AMBIENT_AND_DIFFUSE);
+    glMaterialfv(GL_COLOR_MATERIAL, GL_SPECULAR, light_0_specular);
+    glMaterialfv(GL_COLOR_MATERIAL, GL_EMISSION, light_0_ambient);
 }
 
 int puntos()
@@ -789,16 +807,17 @@ void display(void){
     glEnd();	
     pintar_matriz();
     
-    Texto("PACMAN",0,2.5,.30);
+    Texto("PACMAN",0,1.95,.30);
     string lol = puntaje + std::to_string(puntos());
     char array[lol.size()+1];
     strcpy(array, lol.c_str());
-    Texto(array,-2,-2.5,.50);
+    Texto(array,-2,-2.05,.50);
     
     lol = vida + std::to_string(vidas);
     char array1[lol.size()+1];
     strcpy(array1, lol.c_str());
-    Texto(array1,2,-2.5,.50);
+    Texto(array1,1.5,-2.05,.30);
+
     
     bandera++;
     if(bandera > 5){
@@ -843,6 +862,7 @@ void display(void){
     
     if(mas() == 0){
         glColor3f(0.0, 0.0, 0.0);
+        printf("GANASTE");
         Mensaje("GANASTE", 0, 0, 0.50);
         sleep(4);
         exit(0);
@@ -850,6 +870,7 @@ void display(void){
     
     if(vidas <= 0){
         glColor3f(0.0, 0.0, 0.0);
+        printf("GAME OVER");
         Mensaje("GAME OVER", 0, 0, 0.50);
         sleep(4);
         exit(0);
